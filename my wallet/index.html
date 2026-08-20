@@ -1,0 +1,400 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0000ff">
+    <title>Crypto Wallet</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="wallet-info">
+                <div class="wallet-icon" id="walletIconBtn">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <span class="wallet-name">Main Wallet 3</span>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn">
+                    <i class="far fa-clock"></i>
+                </button>
+                <button class="icon-btn">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Banner -->
+        <div class="banner">
+            <div class="banner-icon">
+                <i class="fas fa-water"></i>
+            </div>
+            <div class="banner-content">
+                <div class="banner-title">Explore Hyperliquid: 200+ markets live</div>
+                <div class="banner-subtitle">Explore now</div>
+            </div>
+        </div>
+
+        <!-- Balance Section -->
+        <div class="balance-section">
+            <input type="text" class="balance" id="totalBalance" value="$0.00" readonly>
+            <div class="balance-change positive" id="balanceChange">
+                <i class="fas fa-caret-up"></i>
+                <span id="changeAmount">$0.00 (0.00%)</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions">
+            <button class="action-btn">
+                <span class="action-icon">
+                    <i class="fas fa-arrow-up"></i>
+                </span>
+                <span class="action-label">Send</span>
+            </button>
+            <button class="action-btn">
+                <span class="action-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </span>
+                <span class="action-label">Receive</span>
+            </button>
+            <button class="action-btn primary">
+                <span class="action-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </span>
+                <span class="action-label">Swap</span>
+            </button>
+            <button class="action-btn">
+                <span class="action-icon">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="action-label">Buy</span>
+            </button>
+        </div>
+
+        <!-- Tokens Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Tokens</h2>
+                <i class="fas fa-chevron-right chevron"></i>
+            </div>
+            
+            <div class="token-item">
+                <div class="token-icon bitcoin">
+                    <span class="btc-symbol">₿</span>
+                </div>
+                <div class="token-info">
+                    <div class="token-name">Bitcoin</div>
+                    <div class="token-amount" id="btcAmount">0.00183188 BTC</div>
+                </div>
+                <div class="token-value">
+                    <div class="value" id="btcValue">$0.00</div>
+                    <div class="value-change positive" id="btcChange">+$0.00</div>
+                </div>
+            </div>
+
+            <button class="view-all-btn">
+                View all
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </section>
+
+        <!-- Perps Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Perps</h2>
+                <i class="fas fa-chevron-right chevron"></i>
+            </div>
+            
+            <div class="perps-scroll">
+                <div class="perp-card">
+                    <div class="perp-header">
+                        <div class="perp-icon bitcoin">
+                            <span class="btc-symbol">₿</span>
+                        </div>
+                        <div class="perp-badge">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="perp-info">
+                        <div class="perp-title">BTC</div>
+                        <div class="perp-multiplier">40x</div>
+                    </div>
+                    <div class="perp-volume" id="btcVolume">$1.48B Vol</div>
+                </div>
+                
+                <div class="perp-card">
+                    <div class="perp-header">
+                        <div class="perp-icon ethereum">
+                            <i class="fab fa-ethereum"></i>
+                        </div>
+                        <div class="perp-badge">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="perp-info">
+                        <div class="perp-title">ETH</div>
+                        <div class="perp-multiplier">25x</div>
+                    </div>
+                    <div class="perp-volume" id="ethVolume">$681.74M Vol</div>
+                </div>
+                
+                <div class="perp-card">
+                    <div class="perp-header">
+                        <div class="perp-icon hyperliquid">H</div>
+                        <div class="perp-badge">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="perp-info">
+                        <div class="perp-title">HYPE</div>
+                        <div class="perp-multiplier">20x</div>
+                    </div>
+                    <div class="perp-volume">$421M Vol</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-main">
+                <button class="nav-btn active">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="nav-btn">
+                    <i class="fas fa-chart-line"></i>
+                </button>
+                <button class="nav-btn">
+                    <i class="fas fa-infinity"></i>
+                </button>
+                <button class="nav-btn">
+                    <i class="fas fa-compass"></i>
+                </button>
+            </div>
+            <button class="nav-btn search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+        </nav>
+
+        <!-- Predictions Footer -->
+        <div class="predictions-footer">
+            <span>Predictions</span>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Update Balance</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="btcInput">Enter BTC Amount</label>
+                <input type="number" id="btcInput" step="0.00000001" value="0.00183188" placeholder="0.00000000">
+                <div class="modal-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Current: <span id="currentBtc">0.00183188</span> BTC</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" id="modalCancel">Cancel</button>
+                <button class="modal-btn update" id="modalUpdate">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Push Notification -->
+    <div class="push-notification" id="pushNotification">
+        <div class="notification-icon">
+            <div class="notification-shield">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+        </div>
+        <div class="notification-content">
+            <div class="notification-title">💰 Received: <span id="notificationAmount">0.0001666</span> BTC</div>
+            <div class="notification-message">From 0x...</div>
+        </div>
+    </div>
+
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker registered', reg))
+                .catch(err => console.log('Service Worker registration failed', err));
+        }
+
+        // Request notification permission on load
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission().then(permission => {
+                console.log('Notification permission:', permission);
+            });
+        }
+
+        // BTC amount
+        let btcAmount = 0.00183188;
+        let currentBtcPrice = 0;
+        
+        const balanceInput = document.getElementById('totalBalance');
+        const walletIconBtn = document.getElementById('walletIconBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const modalCancel = document.getElementById('modalCancel');
+        const modalUpdate = document.getElementById('modalUpdate');
+        const btcInput = document.getElementById('btcInput');
+        const currentBtc = document.getElementById('currentBtc');
+        const pushNotification = document.getElementById('pushNotification');
+        const notificationAmount = document.getElementById('notificationAmount');
+        
+        // Open modal when wallet icon is clicked
+        walletIconBtn.addEventListener('click', function() {
+            btcInput.value = btcAmount.toFixed(8);
+            currentBtc.textContent = btcAmount.toFixed(8);
+            modalOverlay.classList.add('active');
+            btcInput.focus();
+        });
+        
+        // Close modal
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+        }
+        
+        modalClose.addEventListener('click', closeModal);
+        modalCancel.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+        
+        // Update button click
+        modalUpdate.addEventListener('click', function() {
+            const newAmount = parseFloat(btcInput.value);
+            if (!isNaN(newAmount) && newAmount >= 0) {
+                const oldAmount = btcAmount;
+                btcAmount = newAmount;
+                
+                // Update display immediately
+                updateDisplay();
+                
+                // Close modal
+                closeModal();
+                
+                // Show push notification after 5 seconds
+                setTimeout(function() {
+                    const difference = newAmount - oldAmount;
+                    const sign = difference >= 0 ? '' : '';
+                    notificationAmount.textContent = Math.abs(difference).toFixed(8);
+                    
+                    // Show in-app push notification
+                    pushNotification.classList.add('show');
+                    
+                    // Hide after 5 seconds
+                    setTimeout(function() {
+                        pushNotification.classList.remove('show');
+                    }, 5000);
+                    
+                    // Native push notification (Android/iOS)
+                    if ('Notification' in window && Notification.permission === 'granted') {
+                        const notification = new Notification('💰 Crypto Wallet', {
+                            body: `Received: ${Math.abs(difference).toFixed(8)} BTC\nFrom 0x...`,
+                            icon: 'icon-192.png',
+                            badge: 'icon-192.png',
+                            tag: 'btc-received',
+                            requireInteraction: false,
+                            vibrate: [200, 100, 200]
+                        });
+                        
+                        notification.onclick = function() {
+                            window.focus();
+                            notification.close();
+                        };
+                    } else if (Notification.permission === 'default') {
+                        // Ask for permission
+                        Notification.requestPermission().then(permission => {
+                            if (permission === 'granted') {
+                                new Notification('💰 Crypto Wallet', {
+                                    body: `Received: ${Math.abs(difference).toFixed(8)} BTC`,
+                                    icon: 'icon-192.png'
+                                });
+                            }
+                        });
+                    }
+                }, 5000);
+            }
+        });
+        
+        // Update display with current prices
+        function updateDisplay() {
+            if (currentBtcPrice > 0) {
+                const btcValue = btcAmount * currentBtcPrice;
+                balanceInput.value = `$${btcValue.toFixed(2)}`;
+            }
+        }
+        
+        // Fetch live crypto prices
+        async function fetchCryptoPrices() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true&include_24h_vol=true');
+                const data = await response.json();
+                
+                const btcPrice = data.bitcoin.usd;
+                const btcChange24h = data.bitcoin.usd_24h_change;
+                const btcVolume = data.bitcoin.usd_24h_vol;
+                
+                currentBtcPrice = btcPrice;
+                
+                const ethPrice = data.ethereum.usd;
+                const ethVolume = data.ethereum.usd_24h_vol;
+                
+                const btcValue = btcAmount * btcPrice;
+                const totalBalance = btcValue;
+                
+                const previousBtcValue = btcValue / (1 + (btcChange24h / 100));
+                const changeInDollars = btcValue - previousBtcValue;
+                const changePercentage = btcChange24h;
+                
+                document.getElementById('totalBalance').value = `$${totalBalance.toFixed(2)}`;
+                document.getElementById('changeAmount').textContent = `$${changeInDollars.toFixed(4)} (${changePercentage.toFixed(2)}%)`;
+                
+                document.getElementById('btcAmount').textContent = `${btcAmount.toFixed(8)} BTC`;
+                
+                const balanceChangeElement = document.getElementById('balanceChange');
+                if (btcChange24h >= 0) {
+                    balanceChangeElement.className = 'balance-change positive';
+                    balanceChangeElement.innerHTML = `<i class="fas fa-caret-up"></i><span id="changeAmount">$${changeInDollars.toFixed(4)} (${changePercentage.toFixed(2)}%)</span>`;
+                } else {
+                    balanceChangeElement.className = 'balance-change negative';
+                    balanceChangeElement.innerHTML = `<i class="fas fa-caret-down"></i><span id="changeAmount">$${Math.abs(changeInDollars).toFixed(4)} (${Math.abs(changePercentage).toFixed(2)}%)</span>`;
+                }
+                
+                document.getElementById('btcValue').textContent = `$${btcValue.toFixed(2)}`;
+                document.getElementById('btcChange').textContent = btcChange24h >= 0 ? `+$${changeInDollars.toFixed(4)}` : `-$${Math.abs(changeInDollars).toFixed(4)}`;
+                document.getElementById('btcChange').className = btcChange24h >= 0 ? 'value-change positive' : 'value-change negative';
+                
+                document.getElementById('btcVolume').textContent = `$${(btcVolume / 1e9).toFixed(2)}B Vol`;
+                document.getElementById('ethVolume').textContent = `$${(ethVolume / 1e6).toFixed(2)}M Vol`;
+                
+            } catch (error) {
+                console.error('Error fetching crypto prices:', error);
+                document.getElementById('totalBalance').value = '$118.60';
+                document.getElementById('changeAmount').textContent = '$0.6300 (0.53%)';
+            }
+        }
+        
+        fetchCryptoPrices();
+        setInterval(fetchCryptoPrices, 30000);
+    </script>
+</body>
+</html>

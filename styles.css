@@ -989,3 +989,53 @@ body.notification-backdrop::before {
         height: 150px;
     }
 }
+
+/* Final phone edge spacing */
+.container {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+}
+
+.header,
+.balance-section,
+.section {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.banner {
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.actions {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.bottom-nav {
+    width: calc(100% - 56px);
+}
+
+@media (max-width: 480px) {
+    .header,
+    .balance-section,
+    .section {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    .banner {
+        margin-left: 22px;
+        margin-right: 22px;
+    }
+
+    .actions {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    .bottom-nav {
+        width: calc(100% - 44px);
+    }
+}

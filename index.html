@@ -247,7 +247,7 @@
             </div>
         </div>
         <div class="notification-content">
-            <div class="notification-title">Received: <span id="notificationAmount">$0.00 USD</span></div>
+            <div class="notification-title">Received: <span id="notificationAmount">$0.00</span></div>
             <div class="notification-message">From <span id="notificationAddress">0x...</span></div>
         </div>
     </div>
@@ -264,7 +264,7 @@
             });
         }
 
-        const formatUsd = (amount, digits = 2) => `$${Number(amount).toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits })} USD`;
+        const formatUsd = (amount, digits = 2) => `$${Number(amount).toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits })}`;
 
         let btcAmount = 0.00183188;
         let currentBtcPrice = 0;
@@ -332,7 +332,7 @@
 
                 if ('Notification' in window && Notification.permission === 'granted') {
                     const notification = new Notification('Crypto Wallet', {
-                        body: `Received: $${receivedAmount.toFixed(2)}\nFrom 0x...`,
+                        body: `Received: ${formatUsd(receivedAmount)}\nFrom ${fromAddress}`,
                         icon: 'icon-192.png',
                         badge: 'icon-192.png',
                         tag: 'wallet-received',
@@ -407,6 +407,7 @@
 </body>
 
 </html>
+
 
 
 

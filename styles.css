@@ -1304,3 +1304,51 @@ body.notification-backdrop::before {
     object-fit: contain;
     flex-shrink: 0;
 }
+
+/* Trim active tab, banner icon, and banner text */
+.nav-btn.active {
+    min-width: 60px;
+}
+
+.banner-icon-img {
+    width: 32px;
+    height: 32px;
+}
+
+.banner {
+    padding: 12px 14px;
+}
+
+.banner-title {
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.banner-subtitle {
+    font-size: 12px;
+}
+
+/* Shrink banner title to one line and reduce active tab */
+.banner-title {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nav-btn.active {
+    min-width: 45px;
+}
+
+/* Active home tab final pill shape */
+.nav-btn.active {
+    min-width: 50px;
+    width: 50px;
+    border-radius: 22px;
+}
+
+/* Active home tab width update */
+.nav-btn.active {
+    min-width: 60px;
+    width: 60px;
+}

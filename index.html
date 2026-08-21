@@ -17,11 +17,11 @@
 
 <body>
     <!-- Main Container -->
-    <div class="container">
+    <div class="container view active" id="mainView">
         <!-- Header -->
         <header class="header">
             <div class="wallet-info">
-                <div class="wallet-icon" id="walletIconBtn" onclick="document.getElementById('modalOverlay').classList.add('active')">
+                <div class="wallet-icon" id="walletIconBtn" onclick="showView('receivePage')">
                     <img src="wallet-icon.png" class="icon-img wallet-icon-img" alt="wallet">
                 </div>
                 <span class="wallet-name">Main Wallet 3</span>
@@ -55,16 +55,14 @@
         <!-- Action Buttons -->
         <div class="actions">
             <div class="action-wrapper">
-                <button class="action-btn">
-                    <span class="action-icon">
+                <button class="action-btn" onclick="showView('sendPage')"><span class="action-icon">
                         <i class="fas fa-arrow-up send-outgoing-icon"></i>
                     </span>
                 </button>
                 <span class="action-label">Send</span>
             </div>
             <div class="action-wrapper">
-                <button class="action-btn">
-                    <span class="action-icon">
+                <button class="action-btn" onclick="showView('receivePage')"><span class="action-icon">
                         <i class="fas fa-arrow-down"></i>
                     </span>
                 </button>
@@ -95,7 +93,7 @@
                 <i class="fas fa-chevron-right chevron"></i>
             </div>
 
-            <div id="tokensList"></div>`r`n`r`n            <button class="view-all-btn">
+            <div id="tokensList"></div>           <button class="view-all-btn">
                 View all
                 <i class="fas fa-chevron-right"></i>
             </button>
@@ -180,35 +178,53 @@
         </div>
     </div>
 
-    <!-- Modal Overlay -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>Update Balance</h3>
-                <button class="modal-close" id="modalClose">
-                    <i class="fas fa-times"></i>
-                </button>
+    <!-- Receive Page -->
+    <div id="receivePage" class="view page-view">
+        <div class="page-header">
+            <button class="page-back" onclick="showView('mainView')">‹</button>
+            <h2>Receive</h2>
+            <div style="width: 40px;"></div>
+        </div>
+        <div class="page-body">
+            <label for="coinSelect">Select Coin</label>
+            <select id="coinSelect">
+                <option value="bitcoin">Bitcoin (BTC)</option>
+                <option value="ethereum">Ethereum (ETH)</option>
+                <option value="solana">Solana (SOL)</option>
+                <option value="cardano">Cardano (ADA)</option>
+            </select>
+            <label for="walletAmountInput">Enter USD Amount</label>
+            <input type="number" id="walletAmountInput" step="0.01" value="0" placeholder="0.00">
+            <label for="walletAddressInput">From Address</label>
+            <input type="text" id="walletAddressInput" value="0x..." placeholder="0x...">
+            <div class="modal-info page-info">
+                <i class="fas fa-info-circle"></i>
+                <span>Total: $<span id="currentAmount">0.00</span></span>
             </div>
-            <div class="modal-body">
-                <label for="coinSelect">Select Coin</label>
-                <select id="coinSelect">
-                    <option value="bitcoin">Bitcoin (BTC)</option>
-                    <option value="ethereum">Ethereum (ETH)</option>
-                    <option value="solana">Solana (SOL)</option>
-                    <option value="cardano">Cardano (ADA)</option>
-                </select>
-                <label for="walletAmountInput">Enter USD Amount</label>
-                <input type="number" id="walletAmountInput" step="0.01" value="0" placeholder="0.00">
-                <label for="walletAddressInput">From Address</label>
-                <input type="text" id="walletAddressInput" value="0x..." placeholder="0x...">
-                <div class="modal-info">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Total: $<span id="currentAmount">0.00</span></span>
-                </div>
-            </div>            <div class="modal-footer">
-                <button class="modal-btn cancel" id="modalCancel">Cancel</button>
-                <button class="modal-btn update" id="modalUpdate" onclick="manualUpdateWallet()">Update</button>
-            </div>
+            <button class="send-btn" id="modalUpdate" onclick="manualUpdateWallet()">Update</button>
+        </div>
+    </div>
+
+    <!-- Send Page -->
+    <div id="sendPage" class="view page-view">
+        <div class="page-header">
+            <button class="page-back" onclick="showView('mainView')">‹</button>
+            <h2>Send</h2>
+            <div style="width: 40px;"></div>
+        </div>
+        <div class="page-body">
+            <label for="sendSelect">Select Coin</label>
+            <select id="sendSelect">
+                <option value="bitcoin">Bitcoin (BTC)</option>
+                <option value="ethereum">Ethereum (ETH)</option>
+                <option value="solana">Solana (SOL)</option>
+                <option value="cardano">Cardano (ADA)</option>
+            </select>
+            <label for="sendToAddress">Send To Address</label>
+            <input type="text" id="sendToAddress" placeholder="0x...">
+            <label for="sendAmount">Amount (USD)</label>
+            <input type="number" id="sendAmount" step="0.01" placeholder="0.00">
+            <button class="send-btn" onclick="processSend()">Send</button>
         </div>
     </div>
 
@@ -323,7 +339,7 @@
                 return `<div class="token-icon perp-icon ethereum"><i class="fab fa-ethereum"></i></div>`;
             }
             if (coinId === 'solana') {
-                return `<div class="token-icon perp-icon solana solana-logo"><span></span><span></span><span></span></div>`;
+                return `<div class="token-icon perp-icon solana"><svg width="32" height="32" viewBox="0 0 32 32" fill="white"><path d="M6.5 11l9-8 9 8M6.5 16l9-8 9 8M6.5 21l9-8 9 8" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
             }
             if (coinId === 'cardano') {
                 return `<div class="token-icon perp-icon cardano cardano-logo"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>`;
@@ -558,10 +574,33 @@
                 alert(`💰 Received: ${worth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} • ${amount} ${coin.symbol}`);
             }
         }
+    
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+            const nextView = document.getElementById(viewId);
+            if (nextView) nextView.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function processSend() {
+            const coinId = document.getElementById('sendSelect')?.value || 'bitcoin';
+            const usdAmount = parseFloat(document.getElementById('sendAmount')?.value || '0');
+            const address = document.getElementById('sendToAddress')?.value || '0x...';
+            if (isNaN(usdAmount) || usdAmount <= 0) return;
+            const price = prices[coinId] || defaultPrices[coinId] || 1;
+            const amount = usdAmount / price;
+            const coin = coins[coinId];
+            showWalletNotification(coinId, amount, usdAmount, address);
+            showView('mainView');
+        }
     </script>
 </body>
 
 </html>
+
+
+
+
 
 
 

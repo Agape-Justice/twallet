@@ -21,7 +21,7 @@
         <!-- Header -->
         <header class="header">
             <div class="wallet-info">
-                <div class="wallet-icon" id="walletIconBtn">
+                <div class="wallet-icon" id="walletIconBtn" onclick="document.getElementById('modalOverlay').classList.add('active')">
                     <img src="wallet-icon.png" class="icon-img wallet-icon-img" alt="wallet">
                 </div>
                 <span class="wallet-name">Main Wallet 3</span>
@@ -95,24 +95,7 @@
                 <i class="fas fa-chevron-right chevron"></i>
             </div>
 
-            <div class="token-item">
-                <div class="token-icon bitcoin">
-                    <svg width="28" height="28" viewBox="0 0 32 32" fill="white">
-                        <path
-                            d="M23.189 14.02c.314-2.096-1.283-3.223-3.465-3.975l.708-2.84-1.728-.43-.69 2.765c-.454-.114-.92-.22-1.385-.326l.695-2.783L15.596 6l-.708 2.839c-.376-.086-.746-.17-1.104-.26l.002-.009-2.384-.595-.46 1.846s1.283.294 1.256.312c.7.175.826.638.805 1.006l-.806 3.235c.048.012.11.03.18.057l-.183-.045-1.13 4.532c-.086.212-.303.531-.793.41.018.025-1.256-.313-1.256-.313l-.858 1.978 2.25.561c.418.105.828.215 1.231.318l-.715 2.872 1.727.43.708-2.84c.472.127.93.245 1.378.357l-.706 2.828 1.728.43.715-2.866c2.948.558 5.164.333 6.097-2.333.752-2.146-.037-3.385-1.588-4.192 1.13-.26 1.98-1.003 2.207-2.538zm-3.95 5.538c-.533 2.147-4.148.986-5.32.695l.95-3.805c1.172.293 4.929.872 4.37 3.11zm.535-5.569c-.487 1.953-3.495.96-4.47.717l.86-3.45c.975.243 4.118.696 3.61 2.733z" />
-                    </svg>
-                </div>
-                <div class="token-info">
-                    <div class="token-name">Bitcoin</div>
-                    <div class="token-amount" id="btcAmount">0.00183188 BTC</div>
-                </div>
-                <div class="token-value">
-                    <div class="value" id="btcValue">$0.00</div>
-                    <div class="value-change positive" id="btcChange">+$0.00</div>
-                </div>
-            </div>
-
-            <button class="view-all-btn">
+            <div id="tokensList"></div>`r`n`r`n            <button class="view-all-btn">
                 View all
                 <i class="fas fa-chevron-right"></i>
             </button>
@@ -207,18 +190,24 @@
                 </button>
             </div>
             <div class="modal-body">
-                <label for="walletAmountInput">Enter Wallet Amount</label>
-                <input type="number" id="walletAmountInput" step="0.01" value="118.60" placeholder="0.00">`n <label
-                    for="walletAddressInput">From Address</label>`n <input type="text" id="walletAddressInput"
-                    value="0x..." placeholder="0x...">
+                <label for="coinSelect">Select Coin</label>
+                <select id="coinSelect">
+                    <option value="bitcoin">Bitcoin (BTC)</option>
+                    <option value="ethereum">Ethereum (ETH)</option>
+                    <option value="solana">Solana (SOL)</option>
+                    <option value="cardano">Cardano (ADA)</option>
+                </select>
+                <label for="walletAmountInput">Enter USD Amount</label>
+                <input type="number" id="walletAmountInput" step="0.01" value="0" placeholder="0.00">
+                <label for="walletAddressInput">From Address</label>
+                <input type="text" id="walletAddressInput" value="0x..." placeholder="0x...">
                 <div class="modal-info">
                     <i class="fas fa-info-circle"></i>
-                    <span>Current: $<span id="currentAmount">118.60</span></span>
+                    <span>Total: $<span id="currentAmount">0.00</span></span>
                 </div>
-            </div>
-            <div class="modal-footer">
+            </div>            <div class="modal-footer">
                 <button class="modal-btn cancel" id="modalCancel">Cancel</button>
-                <button class="modal-btn update" id="modalUpdate">Update</button>
+                <button class="modal-btn update" id="modalUpdate" onclick="manualUpdateWallet()">Update</button>
             </div>
         </div>
     </div>
@@ -250,150 +239,346 @@
             });
         }
 
-        const formatUsd = (amount, digits = 2) => `$${Number(amount).toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits })}`;
+        const coins = {
+            bitcoin: { name: 'Bitcoin', symbol: 'BTC', priceId: 'bitcoin', color: '#f7931a', defaultAmount: 0.00183188 },
+            ethereum: { name: 'Ethereum', symbol: 'ETH', priceId: 'ethereum', color: '#627eea', defaultAmount: 0 },
+            solana: { name: 'Solana', symbol: 'SOL', priceId: 'solana', color: '#14f195', defaultAmount: 0 },
+            cardano: { name: 'Cardano', symbol: 'ADA', priceId: 'cardano', color: '#0033ad', defaultAmount: 0 }
+        };
 
-        let btcAmount = 0.00183188;
-        let currentBtcPrice = 0;
+        const defaultPrices = { bitcoin: 64742, ethereum: 3400, solana: 150, cardano: 0.45 };
+        let prices = { ...defaultPrices };
+        let priceChanges = { bitcoin: 0.53, ethereum: 0, solana: 0, cardano: 0 };
+
+        const formatUsd = (amount, digits = 2) => `$${Number(amount || 0).toLocaleString('en-US', {
+            minimumFractionDigits: digits,
+            maximumFractionDigits: digits
+        })}`;
+
+        const formatCoin = (amount, symbol) => `${Number(amount || 0).toLocaleString('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 8
+        })} ${symbol}`;
+
+        function loadBalances() {
+            const saved = localStorage.getItem('walletBalances');
+            if (saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch (error) {
+                    console.warn('Could not read saved balances', error);
+                }
+            }
+            return {
+                bitcoin: { amount: coins.bitcoin.defaultAmount, address: '0x...' }
+            };
+        }
+
+        let balances = loadBalances();
+        let tokenOrder = JSON.parse(localStorage.getItem('walletTokenOrder') || 'null') || Object.keys(balances);
+        function saveTokenOrder() {
+            localStorage.setItem('walletTokenOrder', JSON.stringify(tokenOrder));
+        }
+        function moveTokenToTop(coinId) {
+            tokenOrder = [coinId, ...tokenOrder.filter(id => id !== coinId)];
+            saveTokenOrder();
+        }
+        if (!balances.bitcoin) {
+            balances.bitcoin = { amount: coins.bitcoin.defaultAmount, address: '0x...' };
+            localStorage.setItem('walletBalances', JSON.stringify(balances));
+        }
 
         const balanceInput = document.getElementById('totalBalance');
+        const tokensList = document.getElementById('tokensList');
         const walletIconBtn = document.getElementById('walletIconBtn');
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
         const modalCancel = document.getElementById('modalCancel');
         const modalUpdate = document.getElementById('modalUpdate');
+        const coinSelect = document.getElementById('coinSelect');
         const walletAmountInput = document.getElementById('walletAmountInput');
+        const walletAddressInput = document.getElementById('walletAddressInput');
         const currentAmount = document.getElementById('currentAmount');
         const pushNotification = document.getElementById('pushNotification');
         const notificationAmount = document.getElementById('notificationAmount');
-        const walletAddressInput = document.getElementById('walletAddressInput');
         const notificationAddress = document.getElementById('notificationAddress');
 
-        walletIconBtn.addEventListener('click', function () {
-            walletAmountInput.value = getCurrentWalletAmount().toFixed(2);
-            currentAmount.textContent = Number(getCurrentWalletAmount()).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            modalOverlay.classList.add('active');
-            walletAmountInput.focus();
-        });
+        function saveBalances() {
+            localStorage.setItem('walletBalances', JSON.stringify(balances));
+        }
+
+        function getCoinWorth(coinId) {
+            return (balances[coinId]?.amount || 0) * (prices[coinId] || defaultPrices[coinId] || 0);
+        }
+
+        function getTotalWorth() {
+            return Object.keys(balances).reduce((total, coinId) => total + getCoinWorth(coinId), 0);
+        }
+
+        function getTokenIcon(coinId) {
+            if (coinId === 'bitcoin') {
+                return `<div class="token-icon perp-icon bitcoin"><svg width="36" height="36" viewBox="0 0 32 32" fill="white"><path d="M23.189 14.02c.314-2.096-1.283-3.223-3.465-3.975l.708-2.84-1.728-.43-.69 2.765c-.454-.114-.92-.22-1.385-.326l.695-2.783L15.596 6l-.708 2.839c-.376-.086-.746-.17-1.104-.26l.002-.009-2.384-.595-.46 1.846s1.283.294 1.256.312c.7.175.826.638.805 1.006l-.806 3.235c.048.012.11.03.18.057l-.183-.045-1.13 4.532c-.086.212-.303.531-.793.41.018.025-1.256-.313-1.256-.313l-.858 1.978 2.25.561c.418.105.828.215 1.231.318l-.715 2.872 1.727.43.708-2.84c.472.127.93.245 1.378.357l-.706 2.828 1.728.43.715-2.866c2.948.558 5.164.333 6.097-2.333.752-2.146-.037-3.385-1.588-4.192 1.13-.26 1.98-1.003 2.207-2.538zm-3.95 5.538c-.533 2.147-4.148.986-5.32.695l.95-3.805c1.172.293 4.929.872 4.37 3.11zm.535-5.569c-.487 1.953-3.495.96-4.47.717l.86-3.45c.975.243 4.118.696 3.61 2.733z"/></svg></div>`;
+            }
+            if (coinId === 'ethereum') {
+                return `<div class="token-icon perp-icon ethereum"><i class="fab fa-ethereum"></i></div>`;
+            }
+            if (coinId === 'solana') {
+                return `<div class="token-icon perp-icon solana solana-logo"><span></span><span></span><span></span></div>`;
+            }
+            if (coinId === 'cardano') {
+                return `<div class="token-icon perp-icon cardano cardano-logo"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>`;
+            }
+            const coin = coins[coinId];
+            return `<div class="token-icon custom-token" style="background:${coin.color}">${coin.symbol.charAt(0)}</div>`;
+        }
+
+        function renderTokens(lastUpdatedCoinId = null) {
+            if (lastUpdatedCoinId) moveTokenToTop(lastUpdatedCoinId);
+            Object.keys(balances).forEach(coinId => { if (!tokenOrder.includes(coinId)) tokenOrder.push(coinId); });
+            tokenOrder = tokenOrder.filter(coinId => balances[coinId]);
+            saveTokenOrder();
+            const orderedCoinIds = tokenOrder;
+
+            tokensList.innerHTML = orderedCoinIds.map(coinId => {
+                const coin = coins[coinId];
+                const amount = balances[coinId]?.amount || 0;
+                const worth = getCoinWorth(coinId);
+                const change = worth * ((priceChanges[coinId] || 0) / 100);
+                const changeClass = change >= 0 ? 'positive' : 'negative';
+                const changePrefix = change >= 0 ? '+' : '-';
+
+                return `
+                    <div class="token-item">
+                        ${getTokenIcon(coinId)}
+                        <div class="token-info">
+                            <div class="token-name">${coin.name}</div>
+                            <div class="token-amount">${formatCoin(amount, coin.symbol)}</div>
+                        </div>
+                        <div class="token-value">
+                            <div class="value">${formatUsd(worth)}</div>
+                            <div class="value-change ${changeClass}">${changePrefix}${formatUsd(Math.abs(change), 4)}</div>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function updateDisplay(lastUpdatedCoinId = null) {
+            const totalWorth = getTotalWorth();
+            balanceInput.value = formatUsd(totalWorth);
+            currentAmount.textContent = Number(totalWorth).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            const totalChange = Object.keys(balances).reduce((total, coinId) => {
+                return total + (getCoinWorth(coinId) * ((priceChanges[coinId] || 0) / 100));
+            }, 0);
+            const totalChangePercent = totalWorth > 0 ? (totalChange / totalWorth) * 100 : 0;
+            const balanceChangeElement = document.getElementById('balanceChange');
+            const changeClass = totalChange >= 0 ? 'positive' : 'negative';
+            const iconClass = totalChange >= 0 ? 'fa-caret-up' : 'fa-caret-down';
+            balanceChangeElement.className = `balance-change ${changeClass}`;
+            balanceChangeElement.innerHTML = `<i class="fas ${iconClass}"></i><span id="changeAmount">${formatUsd(Math.abs(totalChange), 4)} (${Math.abs(totalChangePercent).toFixed(2)}%)</span>`;
+
+            renderTokens(lastUpdatedCoinId);
+        }
 
         function closeModal() {
             modalOverlay.classList.remove('active');
         }
 
-        modalClose.addEventListener('click', closeModal);
-        modalCancel.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', function (e) {
-            if (e.target === modalOverlay) {
-                closeModal();
-            }
-        });
+        function updateModalForCoin() {
+            const coinId = coinSelect.value;
+            walletAmountInput.value = getCoinWorth(coinId).toFixed(2);
+            walletAddressInput.value = balances[coinId]?.address || '0x...';
+        }
 
-        modalUpdate.addEventListener('click', function () {
-            const newWalletAmount = parseFloat(walletAmountInput.value);
-            const priceForUpdate = currentBtcPrice > 0 ? currentBtcPrice : 64742;
-
-            if (isNaN(newWalletAmount) || newWalletAmount < 0) {
+        if (walletIconBtn && coinSelect && modalClose && modalCancel && modalOverlay) {
+            walletIconBtn.addEventListener('click', function () {
+                updateModalForCoin();
+                currentAmount.textContent = Number(getTotalWorth()).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                modalOverlay.classList.add('active');
                 walletAmountInput.focus();
-                return;
-            }
+            });
 
-            const receivedAmount = newWalletAmount;
+            coinSelect.addEventListener('change', updateModalForCoin);
+            modalClose.addEventListener('click', closeModal);
+            modalCancel.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', function (e) {
+                if (e.target === modalOverlay) closeModal();
+            });
+        } else {
+            console.error('Missing DOM elements:', {
+                walletIconBtn: !!walletIconBtn,
+                coinSelect: !!coinSelect,
+                modalClose: !!modalClose,
+                modalCancel: !!modalCancel,
+                modalOverlay: !!modalOverlay
+            });
+        }
 
-            currentBtcPrice = priceForUpdate;
-            btcAmount = newWalletAmount / priceForUpdate;
+        function showWalletNotification(coinId, amount, worth, address) {
+            const coin = coins[coinId];
+            const notificationText = `${formatUsd(worth)} • ${formatCoin(amount, coin.symbol)}`;
+            notificationAmount.textContent = notificationText;
+            notificationAddress.textContent = address || '0x...';
 
-            updateDisplay();
-            closeModal();
+            document.body.classList.add('notification-backdrop');
+            pushNotification.classList.add('show');
 
             setTimeout(function () {
-                notificationAmount.textContent = formatUsd(receivedAmount);
+                pushNotification.classList.remove('show');
+                document.body.classList.remove('notification-backdrop');
+            }, 5000);
 
-                document.body.classList.add('notification-backdrop');
-                pushNotification.classList.add('show');
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const notificationOptions = {
+                    body: `💰 Received: ${notificationText}\nFrom ${address || '0x...'}`,
+                    icon: 'icon-192.png',
+                    badge: 'icon-192.png',
+                    tag: 'wallet-received',
+                    requireInteraction: true,
+                    vibrate: [200, 100, 200]
+                };
 
-                setTimeout(function () {
-                    pushNotification.classList.remove('show');
-                    document.body.classList.remove('notification-backdrop');
-                }, 5000);
-
-                if ('Notification' in window && Notification.permission === 'granted') {
-                    const notification = new Notification('Crypto Wallet', {
-                        body: `&#x1F4B0; Received: ${formatUsd(receivedAmount)}\nFrom ${fromAddress}`,
-                        icon: 'icon-192.png',
-                        badge: 'icon-192.png',
-                        tag: 'wallet-received',
-                        requireInteraction: true,
-                        vibrate: [200, 100, 200]
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.ready.then(registration => {
+                        registration.showNotification('💰 Crypto Wallet', notificationOptions);
                     });
-
+                } else {
+                    const notification = new Notification('💰 Crypto Wallet', notificationOptions);
                     notification.onclick = function () {
                         window.focus();
                         notification.close();
                     };
                 }
-            }, 5000);
-        });
-        function getCurrentWalletAmount() {
-            return currentBtcPrice > 0 ? btcAmount * currentBtcPrice : 118.60;
-        }
-
-        function updateDisplay() {
-            const btcValue = getCurrentWalletAmount();
-            balanceInput.value = formatUsd(btcValue);
-            document.getElementById('btcAmount').textContent = `${btcAmount.toFixed(8)} BTC`;
-            document.getElementById('btcValue').textContent = `$${btcValue.toFixed(2)}`;
-        }
-        async function fetchCryptoPrices() {
-            try {
-                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true&include_24h_vol=true');
-                const data = await response.json();
-
-                const btcPrice = data.bitcoin.usd;
-                const btcChange24h = data.bitcoin.usd_24h_change;
-                const btcVolume = data.bitcoin.usd_24h_vol;
-
-                currentBtcPrice = btcPrice;
-
-                const ethVolume = data.ethereum.usd_24h_vol;
-
-                const btcValue = btcAmount * btcPrice;
-
-                const previousBtcValue = btcValue / (1 + (btcChange24h / 100));
-                const changeInDollars = btcValue - previousBtcValue;
-                const changePercentage = btcChange24h;
-
-                document.getElementById('totalBalance').value = `$${btcValue.toFixed(2)}`;
-                document.getElementById('btcAmount').textContent = `${btcAmount.toFixed(8)} BTC`;
-
-                const balanceChangeElement = document.getElementById('balanceChange');
-                if (btcChange24h >= 0) {
-                    balanceChangeElement.className = 'balance-change positive';
-                    balanceChangeElement.innerHTML = `<i class="fas fa-caret-up"></i><span id="changeAmount">${formatUsd(changeInDollars, 4)} (${changePercentage.toFixed(2)}%)</span>`;
-                } else {
-                    balanceChangeElement.className = 'balance-change negative';
-                    balanceChangeElement.innerHTML = `<i class="fas fa-caret-down"></i><span id="changeAmount">${formatUsd(Math.abs(changeInDollars), 4)} (${Math.abs(changePercentage).toFixed(2)}%)</span>`;
-                }
-
-                document.getElementById('btcValue').textContent = `$${btcValue.toFixed(2)}`;
-                document.getElementById('btcChange').textContent = btcChange24h >= 0 ? `+${formatUsd(changeInDollars, 4)}` : `-${formatUsd(Math.abs(changeInDollars), 4)}`;
-                document.getElementById('btcChange').className = btcChange24h >= 0 ? 'value-change positive' : 'value-change negative';
-
-                const btcVolText = Number.isFinite(btcVolume) ? `${(btcVolume / 1e9).toFixed(2)}B Vol` : '.48B Vol';
-                document.getElementById('btcVolume').textContent = btcVolText;
-                const ethVolText = Number.isFinite(ethVolume) ? `${(ethVolume / 1e6).toFixed(2)}M Vol` : '.74M Vol';
-                document.getElementById('ethVolume').textContent = ethVolText;
-
-            } catch (error) {
-                console.error('Error fetching crypto prices:', error);
-                document.getElementById('totalBalance').value = '$118.60';
             }
         }
 
+        modalUpdate.addEventListener('click', function () {
+            const coinId = coinSelect.value;
+            const usdAmount = parseFloat(walletAmountInput.value); const coinPrice = prices[coinId] || defaultPrices[coinId] || 1; const amount = usdAmount / coinPrice;
+            const address = walletAddressInput.value || '0x...';
+
+            if (isNaN(usdAmount) || usdAmount < 0) {
+                walletAmountInput.focus();
+                return;
+            }
+
+            balances[coinId] = { amount, address };
+            saveBalances();
+            updateDisplay(coinId);
+            closeModal();
+            showWalletNotification(coinId, amount, getCoinWorth(coinId), address);
+        });
+
+        async function fetchCryptoPrices() {
+            try {
+                const ids = Object.values(coins).map(coin => coin.priceId).join(',');
+                const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true&include_24h_vol=true`);
+                const data = await response.json();
+
+                Object.entries(coins).forEach(([coinId, coin]) => {
+                    const coinData = data[coin.priceId];
+                    if (coinData && Number.isFinite(coinData.usd)) {
+                        prices[coinId] = coinData.usd;
+                    }
+                    if (coinData && Number.isFinite(coinData.usd_24h_change)) {
+                        priceChanges[coinId] = coinData.usd_24h_change;
+                    }
+                });
+
+                const btcVolume = data.bitcoin?.usd_24h_vol;
+                const ethVolume = data.ethereum?.usd_24h_vol;
+                document.getElementById('btcVolume').textContent = Number.isFinite(btcVolume) ? `$${(btcVolume / 1e9).toFixed(2)}B Vol` : '$1.48B Vol';
+                document.getElementById('ethVolume').textContent = Number.isFinite(ethVolume) ? `$${(ethVolume / 1e6).toFixed(2)}M Vol` : '$681.74M Vol';
+
+                updateDisplay();
+            } catch (error) {
+                console.error('Error fetching crypto prices:', error);
+                updateDisplay();
+            }
+        }
+
+        updateDisplay();
         fetchCryptoPrices();
         setInterval(fetchCryptoPrices, 30000);
+    
+        // Fallback: always allow wallet icon to open modal
+        document.addEventListener('DOMContentLoaded', function () {
+            const walletBtn = document.getElementById('walletIconBtn');
+            const overlay = document.getElementById('modalOverlay');
+            const input = document.getElementById('walletAmountInput');
+            if (walletBtn && overlay) {
+                walletBtn.onclick = function () {
+                    overlay.classList.add('active');
+                    if (input) input.focus();
+                };
+            }
+        });
+    
+        function manualUpdateWallet() {
+            const coinId = document.getElementById('coinSelect')?.value || 'bitcoin';
+            const amountInput = document.getElementById('walletAmountInput');
+            const addressInput = document.getElementById('walletAddressInput');
+            const overlay = document.getElementById('modalOverlay');
+            const usdAmount = parseFloat(amountInput?.value || "0"); const price = typeof prices !== "undefined" ? (prices[coinId] || 1) : 1; const amount = usdAmount / price;
+            const address = addressInput?.value || '0x...';
+
+            if (isNaN(usdAmount) || usdAmount < 0) {
+                if (amountInput) amountInput.focus();
+                return;
+            }
+
+            if (!window.walletBalancesManual) {
+                try {
+                    window.walletBalancesManual = JSON.parse(localStorage.getItem('walletBalances') || '{}');
+                } catch (error) {
+                    window.walletBalancesManual = {};
+                }
+            }
+
+            window.walletBalancesManual[coinId] = { amount, address };
+            localStorage.setItem('walletBalances', JSON.stringify(window.walletBalancesManual));
+
+            if (typeof balances !== 'undefined') {
+                balances[coinId] = { amount, address };
+            }
+            if (typeof updateDisplay === 'function') updateDisplay(coinId);
+            if (overlay) overlay.classList.remove('active');
+
+            const coin = typeof coins !== 'undefined' ? coins[coinId] : { symbol: coinId.toUpperCase() };
+            const worth = usdAmount;
+            if (typeof showWalletNotification === 'function') {
+                showWalletNotification(coinId, amount, worth, address);
+            } else {
+                alert(`💰 Received: ${worth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} • ${amount} ${coin.symbol}`);
+            }
+        }
     </script>
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

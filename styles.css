@@ -1427,3 +1427,133 @@ body.notification-backdrop::before {
     height: 45px;
     width: 45px;
 }
+
+/* Multi-coin modal and notification polish */
+.modal-body select,
+.modal-body input {
+    width: 100%;
+    padding: 15px 16px;
+    border: 2px solid #e8e8e8;
+    border-radius: 14px;
+    font-size: 16px;
+    outline: none;
+    margin-bottom: 16px;
+    background: #fff;
+}
+
+.modal-body select:focus,
+.modal-body input:focus {
+    border-color: #0000ff;
+}
+
+.custom-token {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+}
+
+#tokensList .token-item:first-child {
+    padding-top: 4px;
+}
+
+.push-notification {
+    width: calc(100% - 36px);
+    max-width: 430px;
+    min-height: 78px;
+    padding: 16px 18px;
+    border-radius: 24px;
+    align-items: center;
+    gap: 14px;
+    transition: transform 0.42s cubic-bezier(0.2, 0.85, 0.25, 1), opacity 0.32s ease;
+}
+
+.notification-shield {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+}
+
+.notification-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.notification-message {
+    font-size: 13px;
+    line-height: 1.25;
+}
+
+/* Realer token icons matching Perps icon style */
+.token-icon.perp-icon {
+    flex-shrink: 0;
+    box-shadow: none;
+}
+
+.token-icon.perp-icon.ethereum {
+    background: #627eea;
+    color: #fff;
+}
+
+.token-icon.perp-icon.solana {
+    background: linear-gradient(135deg, #14f195 0%, #9945ff 50%, #00c2ff 100%);
+    color: #fff;
+}
+
+.token-icon.perp-icon.cardano {
+    background: #0033ad;
+    color: #fff;
+}
+
+.solana-mark,
+.cardano-mark {
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+/* Real Solana-style three bar token logo */
+.token-icon.solana-logo {
+    background: #111;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.solana-logo span {
+    width: 28px;
+    height: 6px;
+    border-radius: 999px;
+    display: block;
+    background: linear-gradient(90deg, #14f195, #9945ff);
+    transform: skewX(-18deg);
+}
+
+.solana-logo span:nth-child(2) {
+    background: linear-gradient(90deg, #9945ff, #00c2ff);
+}
+
+.solana-logo span:nth-child(3) {
+    background: linear-gradient(90deg, #00c2ff, #14f195);
+}
+
+/* Realer Cardano-style dotted token logo */
+.token-icon.cardano-logo {
+    background: #0033ad;
+    position: relative;
+}
+
+.cardano-logo span {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.cardano-logo span:nth-child(1) { width: 7px; height: 7px; left: 23px; top: 23px; }
+.cardano-logo span:nth-child(2) { left: 23px; top: 11px; }
+.cardano-logo span:nth-child(3) { left: 23px; bottom: 11px; }
+.cardano-logo span:nth-child(4) { left: 11px; top: 23px; }
+.cardano-logo span:nth-child(5) { right: 11px; top: 23px; }
+.cardano-logo span:nth-child(6) { left: 15px; top: 15px; }
+.cardano-logo span:nth-child(7) { right: 15px; bottom: 15px; }

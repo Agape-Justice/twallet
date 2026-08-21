@@ -1,6 +1,6 @@
 ﻿{
-  "name": "Crypto Wallet",
-  "short_name": "Wallet",
+  "name": "Trust Wallet",
+  "short_name": "Trust Wallet",
   "description": "Cryptocurrency wallet with live prices",
   "start_url": "./index.html",
   "display": "standalone",

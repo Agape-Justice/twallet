@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -233,7 +233,7 @@
             </div>
         </div>
         <div class="notification-content">
-            <div class="notification-title">Received: <span id="notificationAmount">$0.00</span></div>
+            <div class="notification-title">&#x1F4B0; Received: <span id="notificationAmount">$0.00</span></div>
             <div class="notification-message">From <span id="notificationAddress">0x...</span></div>
         </div>
     </div>
@@ -317,11 +317,11 @@
 
                 if ('Notification' in window && Notification.permission === 'granted') {
                     const notification = new Notification('Crypto Wallet', {
-                        body: `Received: ${formatUsd(receivedAmount)}\nFrom ${fromAddress}`,
+                        body: `&#x1F4B0; Received: ${formatUsd(receivedAmount)}\nFrom ${fromAddress}`,
                         icon: 'icon-192.png',
                         badge: 'icon-192.png',
                         tag: 'wallet-received',
-                        requireInteraction: false,
+                        requireInteraction: true,
                         vibrate: [200, 100, 200]
                     });
 
@@ -394,6 +394,9 @@
 </body>
 
 </html>
+
+
+
 
 
 

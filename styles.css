@@ -1352,3 +1352,78 @@ body.notification-backdrop::before {
     min-width: 60px;
     width: 60px;
 }
+
+/* Slightly taller bottom tabbar */
+.nav-main {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.nav-btn {
+    height: 58px;
+}
+
+.search-btn {
+    height: 58px;
+    width: 58px;
+}
+
+/* Reduce tabbar height slightly */
+.nav-main {
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.nav-btn {
+    height: 54px;
+}
+
+.search-btn {
+    height: 54px;
+    width: 54px;
+}
+
+/* Tabbar final smaller height */
+.nav-main {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.nav-btn {
+    height: 51px;
+}
+
+.search-btn {
+    height: 51px;
+    width: 51px;
+}
+
+/* Tabbar height reduced again */
+.nav-main {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.nav-btn {
+    height: 48px;
+}
+
+.search-btn {
+    height: 48px;
+    width: 48px;
+}
+
+/* Tabbar final height */
+.nav-main {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.nav-btn {
+    height: 45px;
+}
+
+.search-btn {
+    height: 45px;
+    width: 45px;
+}

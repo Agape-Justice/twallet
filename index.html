@@ -27,9 +27,14 @@
                 <span class="wallet-name">Main Wallet 3</span>
             </div>
             <div class="header-actions">
-                <button class="icon-btn"><img src="history-icon.png" class="icon-img history-icon-img" alt="history"></button>
+                <button class="icon-btn"><img src="history-icon.png" class="icon-img history-icon-img"
+                        alt="history"></button>
                 <button class="icon-btn">
-                    <svg class="scan-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4H4v3M17 4h3v3M20 17v3h-3M4 17v3h3" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 12h8" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                    <svg class="scan-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M7 4H4v3M17 4h3v3M20 17v3h-3M4 17v3h3" fill="none" stroke="currentColor"
+                            stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M8 12h8" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" />
+                    </svg>
                 </button>
             </div>
         </header>
@@ -93,7 +98,7 @@
                 <i class="fas fa-chevron-right chevron"></i>
             </div>
 
-            <div id="tokensList"></div>           <button class="view-all-btn">
+            <div id="tokensList"></div> <button class="view-all-btn">
                 View all
                 <i class="fas fa-chevron-right"></i>
             </button>
@@ -155,19 +160,36 @@
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <div class="nav-main">
-                <button class="nav-btn active"><img src="home-icon.png" class="icon-img home-icon-img" alt="home"></button>
+                <button class="nav-btn active"><img src="home-icon.png" class="icon-img home-icon-img"
+                        alt="home"></button>
                 <button class="nav-btn">
-                    <svg class="trend-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l5-5 4 4 7-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7h4v4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg class="trend-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 17l5-5 4 4 7-9" fill="none" stroke="currentColor" stroke-width="2.4"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M16 7h4v4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
                 </button>
                 <button class="nav-btn">
-                    <svg class="infinity-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 14.5c-2 0-3.5-1.4-3.5-3.2S3.5 8.1 5.5 8.1c3.7 0 5.1 6.4 8.9 6.4 2 0 3.6-1.4 3.6-3.2s-1.6-3.2-3.6-3.2c-3.8 0-5.2 6.4-8.9 6.4z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg class="infinity-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M5.5 14.5c-2 0-3.5-1.4-3.5-3.2S3.5 8.1 5.5 8.1c3.7 0 5.1 6.4 8.9 6.4 2 0 3.6-1.4 3.6-3.2s-1.6-3.2-3.6-3.2c-3.8 0-5.2 6.4-8.9 6.4z"
+                            fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
                 </button>
                 <button class="nav-btn">
-                    <svg class="compass-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.8 8.2l-2 5.6-5.6 2 2-5.6 5.6-2z" fill="currentColor"/></svg>
+                    <svg class="compass-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2.2" />
+                        <path d="M15.8 8.2l-2 5.6-5.6 2 2-5.6 5.6-2z" fill="currentColor" />
+                    </svg>
                 </button>
             </div>
             <button class="nav-btn search-btn">
-                <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+                <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4" />
+                    <path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+                </svg>
             </button>
         </nav>
 
@@ -438,7 +460,7 @@
 
         function showWalletNotification(coinId, amount, worth, address) {
             const coin = coins[coinId];
-            const notificationText = `${formatUsd(worth)} • ${formatCoin(amount, coin.symbol)}`;
+            const notificationText = ` ${formatCoin(amount, coin.symbol)}`;
             notificationAmount.textContent = notificationText;
             notificationAddress.textContent = address || '0x...';
 
@@ -522,7 +544,7 @@
         updateDisplay();
         fetchCryptoPrices();
         setInterval(fetchCryptoPrices, 30000);
-    
+
         // Fallback: always allow wallet icon to open modal
         document.addEventListener('DOMContentLoaded', function () {
             const walletBtn = document.getElementById('walletIconBtn');
@@ -535,7 +557,7 @@
                 };
             }
         });
-    
+
         function manualUpdateWallet() {
             const coinId = document.getElementById('coinSelect')?.value || 'bitcoin';
             const amountInput = document.getElementById('walletAmountInput');
@@ -574,7 +596,7 @@
                 alert(`💰 Received: ${worth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} • ${amount} ${coin.symbol}`);
             }
         }
-    
+
         function showView(viewId) {
             document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
             const nextView = document.getElementById(viewId);
@@ -597,40 +619,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

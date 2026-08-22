@@ -361,7 +361,7 @@
                 return `<div class="token-icon perp-icon ethereum"><i class="fab fa-ethereum"></i></div>`;
             }
             if (coinId === 'solana') {
-                return `<div class="token-icon perp-icon solana"><svg width="32" height="32" viewBox="0 0 32 32" fill="white"><path d="M6.5 11l9-8 9 8M6.5 16l9-8 9 8M6.5 21l9-8 9 8" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+                return `<div class="token-icon perp-icon solana solana-real-icon"><svg viewBox="0 0 397.7 311.7" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="solanaGradientIcon" x1="360.8791" y1="351.4553" x2="141.213" y2="-69.2936" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#00ffa3"/><stop offset="1" stop-color="#dc1fff"/></linearGradient></defs><path fill="url(#solanaGradientIcon)" d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7zM64.6 3.8C67 1.4 70.3 0 73.8 0h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 3.8zM333.1 120.1c-2.4-2.4-5.7-3.8-9.2-3.8H6.5c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z"/></svg></div>`;
             }
             if (coinId === 'cardano') {
                 return `<div class="token-icon perp-icon cardano cardano-logo"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>`;
@@ -563,7 +563,9 @@
             const amountInput = document.getElementById('walletAmountInput');
             const addressInput = document.getElementById('walletAddressInput');
             const overlay = document.getElementById('modalOverlay');
-            const usdAmount = parseFloat(amountInput?.value || "0"); const price = typeof prices !== "undefined" ? (prices[coinId] || 1) : 1; const amount = usdAmount / price;
+            const usdAmount = parseFloat(amountInput?.value || "0");
+            const price = typeof prices !== "undefined" ? (prices[coinId] || 1) : 1;
+            const amount = usdAmount / price;
             const address = addressInput?.value || '0x...';
 
             if (isNaN(usdAmount) || usdAmount < 0) {
@@ -588,15 +590,18 @@
             if (typeof updateDisplay === 'function') updateDisplay(coinId);
             if (overlay) overlay.classList.remove('active');
 
+            showView('mainView');
+
             const coin = typeof coins !== 'undefined' ? coins[coinId] : { symbol: coinId.toUpperCase() };
             const worth = usdAmount;
-            if (typeof showWalletNotification === 'function') {
-                showWalletNotification(coinId, amount, worth, address);
-            } else {
-                alert(`💰 Received: ${worth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} • ${amount} ${coin.symbol}`);
-            }
+            setTimeout(() => {
+                if (typeof showWalletNotification === 'function') {
+                    showWalletNotification(coinId, amount, worth, address);
+                } else {
+                    alert(`💰 Received: ${worth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} • ${amount} ${coin.symbol}`);
+                }
+            }, 350);
         }
-
         function showView(viewId) {
             document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
             const nextView = document.getElementById(viewId);
@@ -626,6 +631,11 @@
 </body>
 
 </html>
+
+
+
+
+
 
 
 

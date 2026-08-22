@@ -929,13 +929,13 @@ body.notification-backdrop::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(0, 0, 0, 0.15);
     z-index: 1990;
     pointer-events: none;
 }
 
 .push-notification {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.95);
     color: #111;
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
     border: 1px solid rgba(0, 0, 0, 0.06);
@@ -1831,4 +1831,54 @@ body {
     color: #153cff;
     background: #fff;
     font-size: 10px;
+}
+
+
+
+
+.token-icon.solana svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Solana Icon - Black Background */
+.token-icon.solana {
+    background: #000 !important;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+}
+
+.token-icon.solana svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Final Solana icon override */
+.token-icon.perp-icon.solana,
+.token-icon.solana,
+.perp-icon.solana {
+    width: 54px !important;
+    height: 54px !important;
+    min-width: 54px !important;
+    min-height: 54px !important;
+    background: #000 !important;
+    background-color: #000 !important;
+    background-image: none !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.token-icon.perp-icon.solana svg,
+.token-icon.solana svg,
+.perp-icon.solana svg {
+    width: 38px !important;
+    height: 38px !important;
+    display: block !important;
 }

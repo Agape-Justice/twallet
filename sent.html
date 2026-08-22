@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <title>Transaction Sent</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container sent-page-container">
+        <!-- Header -->
+        <div class="page-header">
+            <button class="page-back" onclick="goBack()"><i class="fas fa-arrow-left" style="font-size: 16px;"></i></button>
+            <h2 id="sentPageTitle">ETH Sent</h2>
+            <button class="icon-btn share-btn" onclick="shareSentTransaction()"><i
+                    class="fas fa-share-alt"></i></button>
+        </div>
+
+        <!-- Transaction Details -->
+        <div class="page-body sent-body">
+            <!-- Amount Section -->
+            <div class="sent-amount-container">
+                <div class="sent-amount" id="sentAmount">-0.00024364 ETH</div>
+                <div class="sent-amount-usd" id="sentAmountUSD">$1.00</div>
+            </div>
+
+            <!-- Details Card 1 -->
+            <div class="sent-details">
+                <div class="detail-row">
+                    <span class="detail-label">Date</span>
+                    <span class="detail-value" id="sentDate">Today at 10:46 PM</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Status <i class="fas fa-info-circle info-icon"></i></span>
+                    <span class="detail-value status" id="sentStatus">Successful</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Recipient</span>
+                    <span class="detail-value recipient" id="sentRecipient">0x1F9D...ed59</span>
+                </div>
+            </div>
+
+            <!-- Details Card 2 -->
+            <div class="sent-details">
+                <div class="detail-row">
+                    <span class="detail-label">Network fee <i class="fas fa-info-circle info-icon"></i></span>
+                    <span class="detail-value" id="sentNetworkFee">0.00017175833146 ETH ($0.65)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Confirmations</span>
+                    <span class="detail-value" id="sentConfirmations">--</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Nonce</span>
+                    <span class="detail-value" id="sentNonce">41</span>
+                </div>
+            </div>
+
+            <!-- Explorer Button -->
+            <button class="view-explorer-btn" onclick="viewOnBlockExplorer()">View on block explorer</button>
+        </div>
+    </div>
+
+    <script>
+        // Get transaction data from sessionStorage or localStorage
+        function getTransactionData() {
+            return JSON.parse(sessionStorage.getItem('lastTransaction')) || {
+                coin: 'ethereum',
+                amount: 0.00024364,
+                usdAmount: 1.00,
+                address: '0x1F9DEf759e4aa6aa4fD691D571d6071e6ed59e0b',
+                timestamp: new Date()
+            };
+        }
+
+        // Initialize page with transaction data
+        function initSentPage() {
+            const tx = getTransactionData();
+            const coins = {
+                bitcoin: { symbol: 'BTC', name: 'Bitcoin' },
+                ethereum: { symbol: 'ETH', name: 'Ethereum' },
+                solana: { symbol: 'SOL', name: 'Solana' },
+                cardano: { symbol: 'ADA', name: 'Cardano' }
+            };
+
+            const coin = coins[tx.coin] || { symbol: 'COIN' };
+            const now = new Date(tx.timestamp);
+            const shortAddress = tx.address.slice(0, 6) + '...' + tx.address.slice(-5);
+            const networkFee = tx.amount * 0.001;
+            const networkFeeUSD = tx.usdAmount * 0.01;
+
+            document.getElementById('sentPageTitle').textContent = coin.symbol + ' Sent';
+            document.getElementById('sentAmount').textContent = '-' + tx.amount.toFixed(8) + ' ' + coin.symbol;
+            document.getElementById('sentAmountUSD').textContent = '$' + tx.usdAmount.toFixed(2);
+            document.getElementById('sentDate').textContent = 'Today at ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+            document.getElementById('sentStatus').textContent = 'Successful';
+            document.getElementById('sentRecipient').textContent = shortAddress;
+            document.getElementById('sentNetworkFee').textContent = networkFee.toFixed(8) + ' ' + coin.symbol + ' ($' + networkFeeUSD.toFixed(2) + ')';
+            document.getElementById('sentConfirmations').textContent = '--';
+            document.getElementById('sentNonce').textContent = '41';
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function shareSentTransaction() {
+            const text = 'Transaction: ' + document.getElementById('sentAmount').textContent;
+            if (navigator.share) {
+                navigator.share({ title: 'Transaction Sent', text: text }).catch(() => { });
+            } else {
+                alert(text);
+            }
+        }
+
+        function viewOnBlockExplorer() {
+            window.open('https://etherscan.io', '_blank');
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initSentPage);
+    </script>
+</body>
+
+</html>
+

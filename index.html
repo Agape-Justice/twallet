@@ -605,17 +605,27 @@
         }
 
         function processSend() {
-            const coinId = document.getElementById('sendSelect')?.value || 'bitcoin';
+            const coinId = document.getElementById('sendSelect')?.value || 'ethereum';
             const usdAmount = parseFloat(document.getElementById('sendAmount')?.value || '0');
-            const address = document.getElementById('sendToAddress')?.value || '0x...';
-            if (isNaN(usdAmount) || usdAmount <= 0) return;
+            const address = document.getElementById('sendToAddress')?.value || '0x1F9DEf759e4aa6aa4fD691D571d6071e6ed59e0b';
+            if (isNaN(usdAmount) || usdAmount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
             const price = prices[coinId] || defaultPrices[coinId] || 1;
             const amount = usdAmount / price;
-            const coin = coins[coinId];
-            showWalletNotification(coinId, amount, usdAmount, address);
-            showView('mainView');
-        }
-    </script>
+            sessionStorage.setItem('lastTransaction', JSON.stringify({
+                coin: coinId,
+                amount: amount,
+                usdAmount: usdAmount,
+                address: address,
+                timestamp: new Date().toISOString()
+            }));
+            window.location.href = 'sent.html';
+        }</script>
 </body>
 
 </html>
+
+
+

@@ -229,12 +229,12 @@ body {
 }
 
 .section-header h2 {
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 700;
 }
 
 .chevron {
-    font-size: 20px;
+    font-size: 15px;
     color: #999;
 }
 
@@ -466,7 +466,7 @@ body {
 }
 
 .modal-header h3 {
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 700;
 }
 
@@ -732,7 +732,7 @@ body {
     }
     
     .action-icon {
-        font-size: 20px;
+        font-size: 15px;
     }
     
     .action-label {
@@ -764,7 +764,7 @@ body {
     .nav-btn {
         width: 48px;
         height: 48px;
-        font-size: 20px;
+        font-size: 15px;
     }
 }
 
@@ -909,7 +909,7 @@ body {
 }
 
 .perp-title {
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .perp-multiplier {
@@ -1626,7 +1626,7 @@ body {
     border-radius: 20px;
     background: #0000ff;
     color: #fff;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 800;
 }
 
@@ -1634,4 +1634,201 @@ body {
     margin-top: 8px;
     font-size: 12px;
     color: #777;
+}
+
+/* ===== SENT TRANSACTION PAGE ===== */
+.sent-page-container {
+    background: #fff;
+    min-height: 100vh;
+    max-width: 420px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+.sent-page-container .page-header {
+    height: 72px;
+    padding: 28px 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-bottom: none;
+}
+
+.sent-page-container .page-header h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f1f1f;
+}
+
+.sent-page-container .page-back,
+.share-btn {
+    width: 34px;
+    height: 34px;
+    border: 0;
+    background: transparent;
+    color: #555;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.sent-body {
+    padding: 16px 12px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.sent-amount-container {
+    text-align: center;
+    margin: 6px 0 20px;
+}
+
+.sent-amount {
+    color: #111;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+}
+
+.sent-amount-usd {
+    margin-top: 7px;
+    color: #8d8d92;
+    font-size: 12px;
+}
+
+.sent-details {
+    background: #f5f4f8;
+    border-radius: 11px;
+    padding: 12px;
+}
+
+.detail-row {
+    min-height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    color: #77777d;
+    font-size: 12px;
+}
+
+.detail-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.info-icon {
+    font-size: 10px;
+    color: #69696f;
+}
+
+.detail-value {
+    color: #404047;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: right;
+    word-break: break-word;
+    max-width: 55%;
+}
+
+.detail-value.status {
+    color: #00a86b;
+}
+
+.detail-value.recipient {
+    font-family: Arial, sans-serif;
+}
+
+.view-explorer-btn {
+    width: 100%;
+    height: 34px;
+    margin-top: 8px;
+    border: 1px dashed #ececf0;
+    border-radius: 8px;
+    background: #fff;
+    color: #173de9;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Enhanced Sent Page Design */
+.sent-page-container .page-header {
+    padding: 42px 18px 0;
+    height: 82px;
+}
+
+.sent-page-container .page-back,
+.share-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px !important;
+    color: #4a4a4a;
+}
+
+.sent-page-container .page-header h2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #161616;
+}
+
+.sent-body {
+    padding: 10px 12px 40px;
+}
+
+.sent-amount-container {
+    margin: 10px 0 32px;
+}
+
+.sent-amount {
+    color: #111 !important;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.sent-amount-usd {
+    font-size: 12px;
+    color: #777;
+    margin-top: 6px;
+}
+
+.sent-details {
+    background: #f7f6fb;
+    border-radius: 12px;
+    padding: 13px 12px;
+    margin-bottom: 14px;
+}
+
+.detail-row {
+    min-height: 30px;
+    font-size: 12px;
+}
+
+.detail-label {
+    color: #74747a;
+}
+
+.detail-value {
+    color: #444;
+}
+
+.detail-value.status {
+    color: #00a86b !important;
+    font-weight: 500;
+}
+
+.view-explorer-btn {
+    height: 36px;
+    border: 1px dashed #ececf2;
+    border-radius: 10px;
+    color: #153cff;
+    background: #fff;
+    font-size: 10px;
 }
